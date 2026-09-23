@@ -99,3 +99,42 @@ agenda = {
             },
             {
                 "Bloque": "3.º y 4.º",
+                "Curso": "4.º A",
+                "Profesor": "Isma",
+                "Sala": "19",
+            },
+        ],
+        "cambios": [
+            {
+                "Bloque": "1.º",
+                "Docente": "Lissete Caravantes",
+                "Reemplaza a": "Sebastián Fuentes",
+                "Curso que toma": "4.º E",
+                "Sala": "34",
+            },
+            {
+                "Bloque": "2.º",
+                "Docente": "Francisca Larraín",
+                "Reemplaza a": "Sebastián Fuentes",
+                "Curso que toma": "1.º D",
+                "Sala": "23",
+            },
+            {
+                "Bloque": "2.º",
+                "Docente": "Héctor Garrido",
+                "Reemplaza a": "Alejandro",
+                "Curso que toma": "1.º C",
+                "Sala": "26",
+            },
+            {
+                "Bloque": "3.º",
+                "Docente": "María Eliana Astudillo",
+                "Reemplaza a": "Alejandro",
+                "Curso que toma": "1.º B",
+                "Sala": "16",
+            },
+        ],
+    },
+    "Viernes 02/10": {
+        "evaluaciones": [
+            {
