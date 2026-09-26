@@ -12,7 +12,8 @@ st.set_page_config(
 
 st.title("📚 Evaluaciones y cambios docentes")
 st.caption(
-    "Aplicación de consulta. Los datos no se pueden editar desde la interfaz."
+    "Consulta evaluaciones y reemplazos docentes por fecha, "
+    "curso, profesor o sala. La información es de solo lectura."
 )
 
 
@@ -83,6 +84,7 @@ agenda = {
             },
         ],
     },
+
     "Jueves 01/10": {
         "evaluaciones": [
             {
@@ -94,13 +96,13 @@ agenda = {
             {
                 "Bloque": "2.º y 3.º",
                 "Curso": "1.º C",
-                "Profesor": "Alejandro",
+                "Profesor": "Alejandro Mondaca",
                 "Sala": "34",
             },
             {
                 "Bloque": "3.º y 4.º",
                 "Curso": "4.º A",
-                "Profesor": "Isma",
+                "Profesor": "Ismael Oyarce",
                 "Sala": "19",
             },
         ],
@@ -121,34 +123,21 @@ agenda = {
             },
             {
                 "Bloque": "2.º",
-                "Docente": "Alejandro Mondaca",
-                "Reemplaza a": "Alejandro",
+                "Docente": "Héctor Garrido",
+                "Reemplaza a": "Alejandro Mondaca",
                 "Curso que toma": "1.º C",
                 "Sala": "26",
             },
             {
                 "Bloque": "3.º",
                 "Docente": "María Eliana Astudillo",
-                "Reemplaza a": "Alejandro",
+                "Reemplaza a": "Alejandro Mondaca",
                 "Curso que toma": "1.º B",
                 "Sala": "16",
             },
-            {
-                "Bloque": "3.º",
-                "Docente": "Ismael Oyarce",
-                "Reemplaza a": "Isma",
-                "Curso que toma": "4.º A",
-                "Sala": "",
-            },
-            {
-                "Bloque": "4.º",
-                "Docente": "Electivo",
-                "Reemplaza a": "Isma",
-                "Curso que toma": "Libre",
-                "Sala": "",
-            },
         ],
     },
+
     "Viernes 02/10": {
         "evaluaciones": [
             {
@@ -194,6 +183,7 @@ agenda = {
             },
         ],
     },
+
     "Lunes 05/10": {
         "evaluaciones": [
             {
@@ -256,24 +246,29 @@ agenda = {
 }
 
 
-busqueda = st.text_input(
-    "🔎 Buscar en todas las fechas",
-    placeholder="Ej.: Quint, 2.º A, sala 23...",
-)
-
-
 def normalizar(texto):
     texto_nfd = unicodedata.normalize("NFD", str(texto))
 
-    texto_sin_tildes = "".join(
+    return "".join(
         caracter
         for caracter in texto_nfd
         if unicodedata.category(caracter) != "Mn"
-    )
-
-    return texto_sin_tildes.lower()
+    ).strip().casefold()
 
 
+# Validación de la estructura de la agenda
+for fecha_registro, programacion in agenda.items():
+    if not all(
+        clave in programacion
+        for clave in ("evaluaciones", "cambios")
+    ):
+        st.error(
+            f"Faltan datos obligatorios en {fecha_registro}."
+        )
+        st.stop()
+
+
+# Construcción de la lista general para el buscador
 registros = []
 
 for fecha_registro, programacion in agenda.items():
@@ -282,7 +277,6 @@ for fecha_registro, programacion in agenda.items():
             "Fecha": fecha_registro,
             "Tipo": "Evaluación",
         }
-
         fila.update(evaluacion)
         registros.append(fila)
 
@@ -291,12 +285,17 @@ for fecha_registro, programacion in agenda.items():
             "Fecha": fecha_registro,
             "Tipo": "Cambio",
         }
-
         fila.update(cambio)
         registros.append(fila)
 
 
-if busqueda:
+busqueda = st.text_input(
+    "🔎 Buscar en todas las fechas",
+    placeholder="Ej.: Carlos Gómez, 2.º A, sala 23...",
+)
+
+
+if busqueda.strip():
     termino = normalizar(busqueda)
 
     resultados = [
@@ -312,6 +311,10 @@ if busqueda:
     ]
 
     if resultados:
+        st.success(
+            f"Se encontraron {len(resultados)} coincidencias."
+        )
+
         tabla_resultados = pd.DataFrame(resultados)
 
         st.dataframe(
