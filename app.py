@@ -66,7 +66,7 @@ agenda = {
                 "Docente": "María José Arévalo",
                 "Reemplaza a": "Fernando Tatter",
                 "Curso que toma": "1.º D",
-                "Sala": "29",
+                "Sala": "30",
             },
             {
                 "Bloque": "3.º",
@@ -190,7 +190,7 @@ agenda = {
                 "Bloque": "1.º y 2.º",
                 "Curso": "2.º C",
                 "Profesor": "María José Arévalo",
-                "Sala": "29",
+                "Sala": "30",
             },
             {
                 "Bloque": "2.º y 3.º",
